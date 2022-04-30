@@ -8,6 +8,7 @@ thead {
 
   th {
     border-width: 0 0 !important;
+    min-width: 90px;
   }
 }
 
@@ -26,3 +27,45 @@ tbody tr {
   height: 25px !important;
   overflow: hidden;
 }
+
+.search {
+  max-width: 60%;
+
+  form {
+    position: relative;
+    width: 100%;
+    margin: 30px auto;
+    background: #5A5C66;
+
+    input {
+      width: 100%;
+      height: 42px;
+      padding-left: 15px;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+
+    input:hover {
+      cursor: pointer;
+    }
+  }
+
+
+  button {
+    height: 42px;
+    width: 42px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  color: white;
+}
+

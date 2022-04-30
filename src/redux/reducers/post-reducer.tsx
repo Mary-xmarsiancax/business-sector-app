@@ -1,35 +1,50 @@
 import {Post} from "../../services/api-types";
 import {AppState, InferActionsTypes} from "../store";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {Action, ActionCreator, AnyAction, Dispatch} from "redux";
+import {ThunkAction} from "redux-thunk";
+import {ActionCreator, AnyAction} from "redux";
 import {getPostsApi} from "../../services/api";
 
 
 export const actions = {
-    setPosts: (posts: Array<Post>) => ({type: "SET_POSTS", posts} as const),
+    setAllPosts: (posts: Array<Post>) => ({type: "SET_All_POSTS", posts} as const),
     setCurrentPage: (currentPage: number) => ({type: "SET_CURRENT_PAGE", currentPage} as const),
+    setPosts:(inputsPosts: string) => ({type: "SET_POSTS", inputsPosts} as const),
 }
 
 export type ImgActionsType = InferActionsTypes<typeof actions>
 
 
 type Posts = { posts: Array<Post> }
+type AllPosts = { allPosts: Array<Post> }
 type CurrentPage = { currentPage:  number }
-type PostState = Posts & CurrentPage
+type PostState = Posts & CurrentPage &AllPosts
 
 const initialState: PostState = {
+    allPosts: [],
     posts: [],
     currentPage: 0
 }
 
 const postReducer = (state = initialState, action: ImgActionsType) => {
     switch (action.type) {
+        case "SET_All_POSTS": {
+            let copyState = {...state}
+            let allPostsCopy = [...copyState.allPosts]
+            let postsCopy = [...copyState.posts]
+            allPostsCopy=action.posts
+            postsCopy = action.posts
+            copyState.allPosts = allPostsCopy
+            copyState.posts = postsCopy
+            return copyState
+        }
         case "SET_POSTS": {
             let copyState = {...state}
+            let allPostsCopy = [...copyState.allPosts]
             let postsCopy = [...copyState.posts]
-            postsCopy = action.posts
+            postsCopy= allPostsCopy.filter((post) => {
+                return post.title.toLowerCase().includes(action.inputsPosts.toLowerCase()) || post.body.toLowerCase().includes(action.inputsPosts.toLowerCase())
+            })
             copyState.posts = postsCopy
-            console.log("copyState", copyState);
             return copyState
         }
         case "SET_CURRENT_PAGE": {
@@ -48,7 +63,7 @@ const postReducer = (state = initialState, action: ImgActionsType) => {
 export const getPosts: ActionCreator<ThunkAction<void, AppState, {}, AnyAction>> = () => (dispatch) => {
     getPostsApi()
         .then((resp) => {
-            dispatch(actions.setPosts(resp.data))
+            dispatch(actions.setAllPosts(resp.data))
         });
 }
 
