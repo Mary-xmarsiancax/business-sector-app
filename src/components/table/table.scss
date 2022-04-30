@@ -23,9 +23,17 @@ button {
   color: var(--bs-table-striped-color);
 }
 
-tbody tr {
-  height: 25px !important;
-  overflow: hidden;
+thead {
+  th {
+    cursor: pointer;
+  }
+}
+
+tbody {
+  tr {
+    height: 25px !important;
+    overflow: hidden;
+  }
 }
 
 .search {
@@ -46,11 +54,14 @@ tbody tr {
       background: transparent;
     }
 
+    input {
+      color: white !important;
+    }
+
     input:hover {
       cursor: pointer;
     }
   }
-
 
   button {
     height: 42px;
@@ -69,3 +80,10 @@ tbody tr {
   color: white;
 }
 
+.desc {
+  transform: rotate(180deg);
+}
+
+.asc, .desc {
+  margin-left: 10px;
+}

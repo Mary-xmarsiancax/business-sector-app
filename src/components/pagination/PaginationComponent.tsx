@@ -2,12 +2,18 @@ import {Pagination} from "react-bootstrap"
 import "./pagination.scss"
 import React, {useEffect, useMemo, useState} from "react";
 
-const PaginationComponent: React.FC<{ count: number, max: number, onChange: (page: number) => void }> = ({
-                                                                                                             count,
-                                                                                                             max,
-                                                                                                             onChange
-                                                                                                         }): React.ReactElement => {
-    const [{start, current}, setPaginationState] = useState({current: 0, start: 0});
+const PaginationComponent: React.FC<{
+    count: number,
+    max: number,
+    onChange: (page: number) => void,
+    page: number
+}> = ({
+          count,
+          max,
+          onChange,
+          page
+      }): React.ReactElement => {
+    const [{start, current}, setPaginationState] = useState({current: page, start: 0});
 
     const pages = useMemo(() => {
         return Array.from(Array(Math.ceil(count / max)).keys());
@@ -33,6 +39,19 @@ const PaginationComponent: React.FC<{ count: number, max: number, onChange: (pag
         return start;
     }
 
+    useEffect(() => {
+        if (current !== page || count) {
+            setPaginationState({current: page, start: getStart(page)});
+        }
+    }, [page, count])
+
+    useEffect(() => {
+        setPaginationState({
+            current: 0,
+            start: 0
+        });
+    }, [count])
+
     const handleClick = (value: number): void => {
         setPaginationState({current: value, start: getStart(value)});
     };
@@ -51,7 +70,7 @@ const PaginationComponent: React.FC<{ count: number, max: number, onChange: (pag
 
     return (
         <div className={"pagination-wr bold"}>
-            <span onClick={prevPage}>Назад</span>
+            <span className={"pointer"} onClick={prevPage}>Назад</span>
             <div className={"flex"}>
                 {pages.length > 5 && start > 0 && <span>...</span>}
                 <Pagination>
@@ -61,7 +80,7 @@ const PaginationComponent: React.FC<{ count: number, max: number, onChange: (pag
                 </Pagination>
                 {pages.length > 5 && start + 5 < pages.length && <span>...</span>}
             </div>
-            <span onClick={nextPage}>Далее</span>
+            <span className={"pointer"} onClick={nextPage}>Далее</span>
         </div>
     )
 }

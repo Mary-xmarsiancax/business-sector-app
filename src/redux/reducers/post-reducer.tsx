@@ -6,51 +6,53 @@ import {getPostsApi} from "../../services/api";
 
 
 export const actions = {
-    setAllPosts: (posts: Array<Post>) => ({type: "SET_All_POSTS", posts} as const),
-    setCurrentPage: (currentPage: number) => ({type: "SET_CURRENT_PAGE", currentPage} as const),
-    setPosts:(inputsPosts: string) => ({type: "SET_POSTS", inputsPosts} as const),
+    setPosts: (posts: Array<Post>) => ({type: "SET_POSTS", posts} as const),
+    search: (input: string) => ({type: "SEARCH", input} as const),
+    sort: (column: string) => ({type: "SORT", column} as const),
 }
 
-export type ImgActionsType = InferActionsTypes<typeof actions>
+export type PostsActionType = InferActionsTypes<typeof actions>
 
 
-type Posts = { posts: Array<Post> }
-type AllPosts = { allPosts: Array<Post> }
-type CurrentPage = { currentPage:  number }
-type PostState = Posts & CurrentPage &AllPosts
+export type PostState = { posts: Array<Post>; sortBy?: string; sortDirection: string, search: string }
 
 const initialState: PostState = {
-    allPosts: [],
     posts: [],
-    currentPage: 0
+    sortBy: undefined,
+    sortDirection: "asc",
+    search: ""
 }
 
-const postReducer = (state = initialState, action: ImgActionsType) => {
+const postReducer = (state = initialState, action: PostsActionType) => {
     switch (action.type) {
-        case "SET_All_POSTS": {
-            let copyState = {...state}
-            let allPostsCopy = [...copyState.allPosts]
-            let postsCopy = [...copyState.posts]
-            allPostsCopy=action.posts
-            postsCopy = action.posts
-            copyState.allPosts = allPostsCopy
-            copyState.posts = postsCopy
-            return copyState
-        }
         case "SET_POSTS": {
-            let copyState = {...state}
-            let allPostsCopy = [...copyState.allPosts]
-            let postsCopy = [...copyState.posts]
-            postsCopy= allPostsCopy.filter((post) => {
-                return post.title.toLowerCase().includes(action.inputsPosts.toLowerCase()) || post.body.toLowerCase().includes(action.inputsPosts.toLowerCase())
-            })
-            copyState.posts = postsCopy
-            return copyState
+            return {...state, posts: action.posts}
         }
-        case "SET_CURRENT_PAGE": {
-            let copyState = {...state}
-            copyState.currentPage = action.currentPage
-            return copyState
+        case "SEARCH": {
+            return {...state, search: action.input}
+        }
+
+        case "SORT": {
+
+            if (state.sortBy === undefined && state.sortBy !== action.column) {
+                return {
+                    ...state,
+                    sortBy: action.column,
+                    sortDirection: "asc"
+                }
+            } else if (state.sortBy === action.column && state.sortDirection === "asc") {
+                return {
+                    ...state,
+                    sortBy: action.column,
+                    sortDirection: "desc"
+                }
+            } else {
+                return {
+                    ...state,
+                    sortBy: undefined,
+                    sortDirection: "asc"
+                }
+            }
         }
 
         default:
@@ -63,7 +65,7 @@ const postReducer = (state = initialState, action: ImgActionsType) => {
 export const getPosts: ActionCreator<ThunkAction<void, AppState, {}, AnyAction>> = () => (dispatch) => {
     getPostsApi()
         .then((resp) => {
-            dispatch(actions.setAllPosts(resp.data))
+            dispatch(actions.setPosts(resp.data))
         });
 }
 
