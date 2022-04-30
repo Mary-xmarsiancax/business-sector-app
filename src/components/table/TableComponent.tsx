@@ -1,17 +1,35 @@
 import {Table} from "react-bootstrap"
 import "./table.scss"
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ChevronDown} from "react-bootstrap-icons";
-import React, {useEffect} from "react";
+import React, {useEffect, useMemo} from "react";
 import {getPosts} from "../../redux/reducers/post-reducer";
-import {AppDispatch} from "../../redux/store";
+import {AppDispatch, AppState} from "../../redux/store";
+import {Post} from "../../services/api-types";
 
 
 const TableComponent: React.FC = (): React.ReactElement => {
+    const posts = useSelector<AppState>(state => state.posts) as Array<Post>;
+    const currentPage = useSelector<AppState>(state => state.currentPage) as number;
+    console.log("currentPage", currentPage);
+    console.log(posts.slice(currentPage * 10, 10));
+    const start = currentPage * 10
+    const tableTrElement =  posts.slice(start,start+10).map(
+        post => {
+            return (
+                <tr key={post.id}>
+                    <td>{post.id}</td>
+                    <td>{post.title}</td>
+                    <td>{post.body}</td>
+                </tr>
+            )
+        }
+    )
+
     const dispatch: AppDispatch = useDispatch()
     useEffect(() => {
         dispatch(getPosts())
-    },[])
+    }, [])
 
     return (
         <Table striped bordered hover>
@@ -20,7 +38,7 @@ const TableComponent: React.FC = (): React.ReactElement => {
                 <th>
                     ID
                     <button>
-                        <ChevronDown color={"white"} />
+                        <ChevronDown color={"white"}/>
                     </button>
                 </th>
                 <th>
@@ -38,21 +56,7 @@ const TableComponent: React.FC = (): React.ReactElement => {
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-            </tr>
+            {tableTrElement}
             </tbody>
         </Table>
     )
