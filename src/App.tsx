@@ -6,9 +6,7 @@ import Content from "./components/Content";
 function App() {
   return (
    <Container className={"app-container"}>
-       <Container className={"main-container"}>
            <Content/>
-       </Container>
    </Container>
   );
 }

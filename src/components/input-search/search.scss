@@ -1,20 +1,25 @@
-.search{
+.search {
   form {
     position: relative;
     width: 100%;
     margin: 30px auto;
-    background: 	rgb(169,169,169);
+    background: #5A5C66;
+
+    input {
+      width: 100%;
+      height: 42px;
+      padding-left: 15px;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+    input:hover{
+      cursor: pointer;
+    }
   }
 
-  input{
-    width: 100%;
-    height: 42px;
-    padding-left: 15px;
-    border: none;
-    outline: none;
-    background: transparent;
-  }
-  button{
+
+  button {
     height: 42px;
     width: 42px;
     position: absolute;
@@ -25,5 +30,9 @@
     outline: none;
     background: transparent;
   }
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+  color: white;
 }
 

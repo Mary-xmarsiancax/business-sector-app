@@ -1,0 +1,28 @@
+table {
+  min-height: 60vh;
+}
+
+thead {
+  background-color: #474955;
+  color: white;
+
+  th {
+    border-width: 0 0 !important;
+  }
+}
+
+
+button {
+  background-color: #474955;
+  border: none;
+}
+
+.table-striped > tbody > tr > * {
+  --bs-table-accent-bg: #FFFFFF !important;
+  color: var(--bs-table-striped-color);
+}
+
+tbody tr {
+  height: 25px !important;
+  overflow: hidden;
+}

@@ -1,0 +1,15 @@
+.pagination-wr {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .page-link {
+    border: none;
+    color: black;
+    background-color: white;
+  }
+
+  .flex {
+    display: flex;
+  }
+}
