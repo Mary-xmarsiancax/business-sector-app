@@ -1,7 +1,6 @@
 import "./content.scss"
 import {Col, Container, Row} from "react-bootstrap";
 import TableComponent from "./table/TableComponent";
-import FooterComponent from "./footer/FooterComponent";
 import React from "react";
 
 const Content: React.FC = (): React.ReactElement => {
@@ -14,9 +13,6 @@ const Content: React.FC = (): React.ReactElement => {
                   <Row>
                       <Col xs={12} md={12}>
                           <TableComponent/>
-                      </Col>
-                      <Col xs={12} md={12}>
-                          <FooterComponent/>
                       </Col>
                   </Row>
               </Container>
