@@ -6,7 +6,7 @@ import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 
 function App() {
     return (
-        <Container className={"app-container"}>
+        <Container>
             <BrowserRouter>
                 <Routes>
                     <Route path="/">
